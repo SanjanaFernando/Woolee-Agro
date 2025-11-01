@@ -32,11 +32,7 @@ const Navbar = () => {
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
           <span className="bg-transparent p-0 rounded-md">
-            <img
-              src={Logo}
-              alt="Purplify logo"
-              className="w-[190px] object-contain"
-            />
+            <img src={Logo} alt="logo" className="w-[190px] object-contain" />
           </span>
         </Link>
 
@@ -164,13 +160,9 @@ const MobileNavigation = ({
       <div className="flex justify-between items-center mb-8">
         <Link to="/" className="flex items-center gap-2" onClick={onClose}>
           <span className="bg-transparent p-0 rounded-md">
-            <img
-              src={Logo}
-              alt="Purplify logo"
-              className="w-7 h-7 object-contain"
-            />
+            <img src={Logo} alt="logo" className="w-7 h-7 object-contain" />
           </span>
-          <span className="font-bold text-xl text-white">Purplify</span>
+          <span className="font-bold text-xl text-white">Woolee</span>
         </Link>
         <SheetClose asChild>
           <Button
