@@ -56,14 +56,12 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
         {/* Quick actions */}
         <div
-          className={`
-            absolute bottom-0 left-0 right-0 p-4 transition-all duration-300 transform
-            ${
-              isHovered
-                ? "translate-y-0 opacity-100"
-                : "translate-y-full opacity-0"
-            }
-          `}
+          className={
+            `absolute bottom-0 left-0 right-0 p-4 transition-all duration-300 transform translate-y-0 opacity-100 ` +
+            (isHovered
+              ? "md:translate-y-0 md:opacity-100"
+              : "md:translate-y-full md:opacity-0")
+          }
         >
           <div className="flex gap-2">
             <Button
