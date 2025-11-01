@@ -1,10 +1,64 @@
 import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import image1 from "../assests/images/plant1.png";
 import image2 from "../assests/images/plant2.png";
 import image3 from "../assests/images/plant3.png";
 import { motion, AnimatePresence } from "framer-motion";
+
+// Animated number counter
+function AnimatedNumber({
+  value,
+  duration = 1500,
+  suffix = "",
+}: {
+  value: number;
+  duration?: number;
+  suffix?: string;
+}) {
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    // Respect user preference for reduced motion
+    const prefersReduced =
+      typeof window !== "undefined" &&
+      window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (prefersReduced) {
+      setCurrent(value);
+      return;
+    }
+
+    let start: number | null = null;
+    let rafId = 0;
+
+    const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+
+    const tick = (timestamp: number) => {
+      if (start === null) start = timestamp;
+      const elapsed = timestamp - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = easeOutCubic(progress);
+      setCurrent(Math.floor(eased * value));
+      if (progress < 1) {
+        rafId = requestAnimationFrame(tick);
+      }
+    };
+
+    rafId = requestAnimationFrame(tick);
+
+    return () => cancelAnimationFrame(rafId);
+  }, [value, duration]);
+
+  return (
+    <span aria-live="polite" className="font-bold text-2xl text-[#63b516]">
+      {current}
+      {suffix}
+    </span>
+  );
+}
 
 const Hero = () => {
   return (
@@ -26,25 +80,28 @@ const Hero = () => {
           </p>
 
           <div className="flex flex-wrap gap-4 pt-3">
-            <Button className="bg-[#63b516] hover:bg-[#559d14] text-white text-base px-6 py-6 rounded-xl shadow-md transition-transform duration-200 hover:scale-105">
-              Shop Now
+            <Button
+              asChild
+              className="bg-[#63b516] hover:bg-[#559d14] text-white text-base px-6 py-6 rounded-xl shadow-md transition-transform duration-200 hover:scale-105"
+            >
+              <Link to="/shop">Shop Now</Link>
             </Button>
           </div>
 
           <div className="flex items-center gap-6 pt-3">
             <div className="flex flex-col">
-              <span className="font-bold text-2xl text-[#63b516]">2K+</span>
+              <AnimatedNumber value={190} suffix="+" />
               <span className="text-sm text-gray-500">Happy Gardeners</span>
             </div>
             <div className="w-px h-12 bg-gray-200"></div>
             <div className="flex flex-col">
-              <span className="font-bold text-2xl text-[#63b516]">100+</span>
+              <AnimatedNumber value={100} suffix="+" />
               <span className="text-sm text-gray-500">Plant Varieties</span>
             </div>
             <div className="w-px h-12 bg-gray-200"></div>
             <div className="flex flex-col">
-              <span className="font-bold text-2xl text-[#63b516]">95%</span>
-              <span className="text-sm text-gray-500">Positive Reviews</span>
+              <AnimatedNumber value={23} suffix="+" />
+              <span className="text-sm text-gray-500">Plants</span>
             </div>
           </div>
         </div>
